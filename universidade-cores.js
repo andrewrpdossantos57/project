@@ -101,6 +101,17 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Aplicar cor nos h3 com nomes de faculdades (para recomendacoes.html)
+  (function applyColorsToH3() {
+    document.querySelectorAll('h3').forEach(function(h3) {
+      const text = h3.textContent.trim();
+      const cor = findFacultyColor(text);
+      if (cor && cor.color) {
+        h3.style.setProperty('color', cor.color, 'important');
+      }
+    });
+  })();
+
   // Aplicar cor nos nomes das faculdades onde quer que apareçam (exceto dentro de .homenagens)
   (function applyColorsToOccurrences() {
     const keys = Object.keys(coresUniversidades);
@@ -120,6 +131,8 @@ window.addEventListener('DOMContentLoaded', function() {
         if (!el || !el.textContent) return;
         // não alterar conteúdo dentro da seção de homenagens
         if (el.closest && el.closest('.homenagens')) return;
+        // não alterar h3 (já foi tratado acima)
+        if (el.tagName === 'H3') return;
         // só tocar elementos que contenham o nome
         if (!re.test(el.textContent)) return;
         // substituir apenas o texto correspondente, preservando o HTML
